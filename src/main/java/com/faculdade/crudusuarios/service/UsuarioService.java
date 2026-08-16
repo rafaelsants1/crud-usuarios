@@ -2,6 +2,7 @@ package com.faculdade.crudusuarios.service;
 
 import com.faculdade.crudusuarios.Usuario;
 import com.faculdade.crudusuarios.exception.RecursoDuplicadoException;
+import com.faculdade.crudusuarios.exception.RecursoNaoEncontradoException;
 import com.faculdade.crudusuarios.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -25,5 +26,10 @@ public class UsuarioService {
             throw new RecursoDuplicadoException("Já existe um usuário cadastrado com o E-mail " + usuario.getEmail());
         }
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Não foi possível localizar o id " + id));
     }
 }
