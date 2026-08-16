@@ -1,11 +1,11 @@
-package com.faculdade.cadastro.model;
+package com.faculdade.crudusuarios;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GeneratedType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersists;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Table(name = "usuario")
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GeneratedType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "O nome é obrigatório")
@@ -55,7 +55,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    @PrePersists
+    @PrePersist
     protected void aoCadastrar() {
         this.dataCadastro = LocalDateTime.now();
     }

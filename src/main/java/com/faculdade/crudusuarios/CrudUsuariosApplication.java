@@ -1,4 +1,4 @@
-package com.faculdade.crud_usuarios;
+package com.faculdade.crudusuarios;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
