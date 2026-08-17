@@ -2,6 +2,7 @@ package com.faculdade.crudusuarios.controller;
 
 import com.faculdade.crudusuarios.Usuario;
 import com.faculdade.crudusuarios.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> cadastrar(@Valid @RequestBody Usuario usuario) {
         Usuario usuarioSalvo = usuarioService.cadastrar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
     }
@@ -39,5 +40,10 @@ public class UsuarioController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         usuarioService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> editar(@PathVariable Long id,@Valid @RequestBody Usuario usuario) {
+        Usuario usuarioAtualizado = usuarioService.editar(id, usuario);
+        return ResponseEntity.ok(usuarioAtualizado);
     }
 }

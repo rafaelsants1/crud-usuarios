@@ -42,4 +42,25 @@ public class UsuarioService {
         }
         usuarioRepository.deleteById(id);
     }
+
+    public Usuario editar(Long id, Usuario dadosNovos) {
+        Usuario usuario = buscarPorId(id);
+
+        if(!usuario.getCpf().equals(dadosNovos.getCpf()) && usuarioRepository.existsByCpf(dadosNovos.getCpf())) {
+            throw new RecursoDuplicadoException("O CPF " + dadosNovos.getCpf() + " já pertence a outro usuário");
+        }
+
+        if(!usuario.getEmail().equals(dadosNovos.getEmail()) && usuarioRepository.existsByEmail(dadosNovos.getEmail())) {
+            throw new RecursoDuplicadoException("O E-mail " + dadosNovos.getEmail() + " já pertence a outro usuário");
+        }
+        
+        usuario.setNome(dadosNovos.getNome());
+        usuario.setCpf(dadosNovos.getCpf());
+        usuario.setEmail(dadosNovos.getEmail());
+        usuario.setTelefone(dadosNovos.getTelefone());
+        usuario.setDataNascimento(dadosNovos.getDataNascimento());
+
+
+        return usuarioRepository.save(usuario);
+    }
 }
