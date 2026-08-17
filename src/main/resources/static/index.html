@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de Usuários</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="container cabecalho__conteudo">
+        <h1 class="cabecalho__titulo">Cadastro de Usuários</h1>
+        <p class="cabecalho__descricao">
+            Sistema CRUD em três camadas &middot; Spring Boot + MySQL
+        </p>
+    </div>
+</header>
+
+<main class="container conteudo">
+
+    <!-- ============================ LISTAGEM ============================ -->
+    <section class="painel" aria-labelledby="titulo-lista">
+        <div class="painel__cabecalho">
+            <div class="painel__identificacao">
+                <h2 class="painel__titulo" id="titulo-lista">Usuários cadastrados</h2>
+                <!-- Preenchido pelo JS a cada renderização da tabela. -->
+                <span class="contador" id="contador" hidden></span>
+            </div>
+            <button type="button" class="botao botao--secundario" id="btnAtualizar">
+                Atualizar lista
+            </button>
+        </div>
+
+        <!-- O contêiner rola horizontalmente quando a tabela não cabe.
+             Abaixo de 760px o CSS ainda reorganiza as linhas em cartões. -->
+        <div class="tabela-wrap" tabindex="0" role="region" aria-labelledby="titulo-lista">
+            <table class="tabela">
+                <caption class="sr-only">
+                    Lista de usuários cadastrados, com ações de edição e exclusão por linha.
+                </caption>
+                <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Data de Nascimento</th>
+                    <th scope="col">Data de Cadastro</th>
+                    <th scope="col" class="col-acoes">Ações</th>
+                </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                <!-- Linhas, esqueleto de carregamento e estados vazios/erro
+                     são injetados por script.js. -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============================ FORMULÁRIO ============================ -->
+    <section class="painel" aria-labelledby="titulo-formulario">
+        <div class="painel__cabecalho">
+            <div class="painel__identificacao">
+                <h2 class="painel__titulo" id="titulo-formulario">Novo usuário</h2>
+                <p class="painel__legenda" id="legendaFormulario">
+                    Preencha os dados abaixo para cadastrar um usuário.
+                </p>
+            </div>
+            <!-- Só aparece no modo edição. -->
+            <span class="etiqueta-modo" id="etiquetaModo" hidden>Editando</span>
+        </div>
+
+        <!-- novalidate: a validação nativa dispara, mas as mensagens são
+             renderizadas pelo JS para ficarem em português e estilizadas. -->
+        <form class="formulario" id="formUsuario" novalidate>
+
+            <div class="campo">
+                <label class="campo__rotulo" for="nome">
+                    Nome <span class="obrigatorio" aria-hidden="true">*</span>
+                </label>
+                <input class="campo__controle" type="text" id="nome" name="nome"
+                       maxlength="60" autocomplete="name" required
+                       aria-describedby="erro-nome">
+                <p class="campo__erro" id="erro-nome" hidden></p>
+            </div>
+
+            <div class="campo">
+                <label class="campo__rotulo" for="email">
+                    E-mail <span class="obrigatorio" aria-hidden="true">*</span>
+                </label>
+                <input class="campo__controle" type="email" id="email" name="email"
+                       maxlength="60" autocomplete="email" required
+                       aria-describedby="erro-email">
+                <p class="campo__erro" id="erro-email" hidden></p>
+            </div>
+
+            <div class="campo">
+                <label class="campo__rotulo" for="cpf">
+                    CPF <span class="obrigatorio" aria-hidden="true">*</span>
+                </label>
+                <!-- type="text" + inputmode: CPF nunca é tratado como número,
+                     sob pena de perder zeros à esquerda. -->
+                <input class="campo__controle" type="text" id="cpf" name="cpf"
+                       inputmode="numeric" maxlength="11" autocomplete="off" required
+                       placeholder="Somente números"
+                       aria-describedby="ajuda-cpf erro-cpf">
+                <p class="campo__ajuda" id="ajuda-cpf">11 dígitos, sem pontos ou traço.</p>
+                <p class="campo__erro" id="erro-cpf" hidden></p>
+            </div>
+
+            <div class="campo">
+                <label class="campo__rotulo" for="telefone">Telefone</label>
+                <input class="campo__controle" type="text" id="telefone" name="telefone"
+                       inputmode="tel" maxlength="20" autocomplete="tel"
+                       placeholder="DDD + número"
+                       aria-describedby="ajuda-telefone erro-telefone">
+                <p class="campo__ajuda" id="ajuda-telefone">Opcional. Somente números.</p>
+                <p class="campo__erro" id="erro-telefone" hidden></p>
+            </div>
+
+            <div class="campo">
+                <label class="campo__rotulo" for="dataNascimento">
+                    Data de Nascimento <span class="obrigatorio" aria-hidden="true">*</span>
+                </label>
+                <input class="campo__controle" type="date" id="dataNascimento"
+                       name="dataNascimento" required
+                       aria-describedby="erro-dataNascimento">
+                <p class="campo__erro" id="erro-dataNascimento" hidden></p>
+            </div>
+
+            <div class="formulario__acoes">
+                <button type="submit" class="botao botao--primario" id="btnSalvar">
+                    Cadastrar usuário
+                </button>
+                <!-- Só aparece no modo edição; devolve o formulário ao modo cadastro. -->
+                <button type="button" class="botao botao--secundario" id="btnCancelar" hidden>
+                    Cancelar edição
+                </button>
+            </div>
+        </form>
+    </section>
+
+</main>
+
+<footer class="rodape">
+    <div class="container">
+        <p>Projeto acadêmico &middot; Análise e Desenvolvimento de Sistemas &middot; 4º período</p>
+    </div>
+</footer>
+
+<!-- Região de feedback: sucesso e erro. Fica fixa na tela para permanecer
+     visível independentemente do scroll (a tabela fica no topo, o formulário
+     no rodapé). O role de cada mensagem é definido pelo JS. -->
+<div class="feedback" id="feedback" aria-live="polite" aria-atomic="false"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
