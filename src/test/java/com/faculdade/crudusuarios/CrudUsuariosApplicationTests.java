@@ -1,4 +1,4 @@
-package com.faculdade.crud_usuarios;
+package com.faculdade.crudusuarios;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
