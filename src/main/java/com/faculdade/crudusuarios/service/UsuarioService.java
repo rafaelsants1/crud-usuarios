@@ -4,7 +4,10 @@ import com.faculdade.crudusuarios.Usuario;
 import com.faculdade.crudusuarios.exception.RecursoDuplicadoException;
 import com.faculdade.crudusuarios.exception.RecursoNaoEncontradoException;
 import com.faculdade.crudusuarios.repository.UsuarioRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.List;
 @Service
 public class UsuarioService {
@@ -30,6 +33,13 @@ public class UsuarioService {
 
     public Usuario buscarPorId(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Não foi possível localizar o id " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Não foi possível localizar o usuário com Id " + id));
+    }
+
+    public void deletar(Long id){
+        if (!usuarioRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Não foi possível localizar o id " + id);
+        }
+        usuarioRepository.deleteById(id);
     }
 }

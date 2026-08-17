@@ -5,6 +5,7 @@ import com.faculdade.crudusuarios.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 
@@ -34,4 +35,9 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
